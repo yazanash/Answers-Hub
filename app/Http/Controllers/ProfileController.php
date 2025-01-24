@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use Illuminate\Http\Request;
-
+use Auth;
 class ProfileController extends Controller
 {
     /**
@@ -12,7 +12,11 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        if($user->profile==null){
+
+            return view('profile.show');
+        }
     }
 
     /**
@@ -20,7 +24,7 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -28,7 +32,12 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'=> 'required'
+           ]);
+           $input=$request->all();
+           Category::create($input);
+           return redirect()->route('categories.index')->with('success','Category created successfully');
     }
 
     /**
@@ -36,7 +45,7 @@ class ProfileController extends Controller
      */
     public function show(Profile $profile)
     {
-        //
+        return view('category.show',compact('category'));
     }
 
     /**
@@ -44,7 +53,8 @@ class ProfileController extends Controller
      */
     public function edit(Profile $profile)
     {
-        //
+        return view('category.edit',compact('category'));
+    
     }
 
     /**
@@ -52,7 +62,12 @@ class ProfileController extends Controller
      */
     public function update(Request $request, Profile $profile)
     {
-        //
+        $request->validate([
+            'name'=> 'required'
+           ]);
+           $input=$request->all();
+           $category->update($input);
+           return redirect()->route('categories.index')->with('success','Category updated successfully');
     }
 
     /**
@@ -60,6 +75,7 @@ class ProfileController extends Controller
      */
     public function destroy(Profile $profile)
     {
-        //
+        $category->delete();
+        return redirect()->route('categories.index')->with('success','Category deleted successfully');
     }
 }

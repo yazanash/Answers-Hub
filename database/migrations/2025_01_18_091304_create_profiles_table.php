@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->refrence('id')->on('users');
             $table->string('name');
-            $table->string('bio');
+            $table->text('bio');
+            $table->integer('gender');
+            $table->text('facebook');
+            $table->text('Whatsapp');
+            $table->text('linkedin');
+            $table->text('svu_email');
             $table->timestamps();
         });
     }
