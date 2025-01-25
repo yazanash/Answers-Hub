@@ -34,7 +34,7 @@
                             <a class="nav-link" aria-current="page" href="{{route('home')}}">Home</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="">Q&A</a>
+                            <a class="nav-link" aria-current="page" href="{{route('questions.index')}}">Q&A</a>
                           </li>
                           <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="{{route('posts.index')}}">Posts</a>
