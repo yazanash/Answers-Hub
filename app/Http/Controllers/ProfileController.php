@@ -15,8 +15,10 @@ class ProfileController extends Controller
         $user = Auth::user();
         if($user->profile==null){
 
-            return view('profile.show');
+            return redirect()->route('profile.create');
         }
+        $profile = $user->profile;
+        return view('profile.show',compact('user'),compact('profile'));
     }
 
     /**
@@ -24,7 +26,8 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+        $user = Auth::user();
+        return view('profile.create',compact('user'));
     }
 
     /**
@@ -32,12 +35,22 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
+       
         $request->validate([
-            'name'=> 'required'
+            'name'=> 'required',
+            'bio'=> 'required',
+            'gender'=> 'required',
            ]);
            $input=$request->all();
-           Category::create($input);
-           return redirect()->route('categories.index')->with('success','Category created successfully');
+           if($photo=$request->file('photo')){
+            $destination_path="images/profile/";
+            $photo_path = date('YmdHis').".".$photo->getClientOriginalExtension();
+            $photo->move($destination_path,$profile_path);
+            $input['photo']=$photo_path;
+       }
+           $input['user_id']= Auth::user()->id;
+           Profile::create($input);
+           return redirect()->route('profile.index')->with('success','profile updated successfully');
     }
 
     /**
@@ -45,7 +58,8 @@ class ProfileController extends Controller
      */
     public function show(Profile $profile)
     {
-        return view('category.show',compact('category'));
+
+        return view('profile.show',compact('profile'));
     }
 
     /**
@@ -53,7 +67,8 @@ class ProfileController extends Controller
      */
     public function edit(Profile $profile)
     {
-        return view('category.edit',compact('category'));
+        $user = Auth::user();
+        return view('profile.edit',compact('profile'),compact('user'));
     
     }
 
@@ -63,19 +78,20 @@ class ProfileController extends Controller
     public function update(Request $request, Profile $profile)
     {
         $request->validate([
-            'name'=> 'required'
+            'name'=> 'required',
+            'bio'=> 'required',
+            'gender'=> 'required'
            ]);
            $input=$request->all();
-           $category->update($input);
-           return redirect()->route('categories.index')->with('success','Category updated successfully');
+           if($photo=$request->file('photo')){
+            $destination_path="images/profile";
+            $photo_path = date('YmdHis').".".$photo->getClientOriginalExtension();
+            $photo->move($destination_path,$photo_path);
+            $input['photo']=$photo_path;
+       }
+           $profile->update($input);
+           return redirect()->route('profile.index')->with('success','profile updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Profile $profile)
-    {
-        $category->delete();
-        return redirect()->route('categories.index')->with('success','Category deleted successfully');
-    }
+    
 }

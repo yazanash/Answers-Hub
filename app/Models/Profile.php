@@ -4,13 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Profile extends Model
 {
-    protected $fillables=[
+    protected $fillable=[
         'user_id',
         'name',
         'bio',
         'gender',
+        'facebook',
+        'whatsapp',
+        'linkedin',
+        'svu_email',
+        'photo'
     ];
 
    /**

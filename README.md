@@ -12,9 +12,9 @@ AnswersHub is a web application developed using Laravel. It aims to provide a pl
 - **Search Functionality**: Users can search for questions and articles.
 
 ## Requirements
-- PHP 7.4 or higher
+- PHP 8.3 or higher
 - Composer
-- Laravel 8.x
+- Laravel 11.x
 - MySQL
 
 ## Installation

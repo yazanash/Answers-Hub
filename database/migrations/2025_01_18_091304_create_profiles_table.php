@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->text('bio');
             $table->integer('gender');
-            $table->text('facebook');
-            $table->text('Whatsapp');
-            $table->text('linkedin');
-            $table->text('svu_email');
+            $table->text('facebook')->nullable();
+            $table->text('whatsapp')->nullable();
+            $table->text('linkedin')->nullable();
+            $table->text('svu_email')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }
