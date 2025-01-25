@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
+use App\Models\Group;
 use Illuminate\Http\Request;
-
+use Auth;
 class PostController extends Controller
 {
     /**
@@ -12,7 +14,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts= Post::latest()->paginate(5);
+        
+        return view('post.index',compact('posts'))->with('1'.(request()->input('page',1) -1 )*5);
+   
     }
 
     /**
@@ -20,7 +25,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories= Category::all();
+        $groups= Group::all();
+        return view('post.create',compact('groups'),compact('categories'));
     }
 
     /**
@@ -28,7 +35,24 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'=> 'required',
+            'content' =>  'required',
+            'group_id' =>  'required',
+            'category_id' =>  'required',
+            'poster' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+           ]);
+           $input=$request->all();
+           if($poster=$request->file('poster')){
+                $destination_path="images/";
+                $proster_path = date('YmdHis').".".$poster->getClientOriginalExtension();
+                $poster->move($destination_path,$proster_path);
+                $input['poster']=$proster_path;
+           }
+           $input['user_id']= Auth::user()->id;
+           Post::create($input);
+           return redirect()->route('posts.index')->with('success','Post created successfully');
+    
     }
 
     /**
@@ -36,7 +60,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+       
+        return view('post.show',compact('post'));
     }
 
     /**
@@ -44,7 +69,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $categories= Category::all();
+        $groups= Group::all();
+        return view('post.edit',compact('post'),compact('groups'))->with(compact('categories'));
     }
 
     /**
@@ -52,7 +79,25 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'title'=> 'required',
+            'content' =>  'required',
+            'group_id' =>  'required',
+            'category_id' =>  'required',
+           ]);
+           $input=$request->all();
+           if($poster=$request->file('poster')){
+                $destination_path='images/';
+                $proster_path = date('YmdHis').".".$poster->getClientOriginalExtension();
+                $poster->move($destination_path,$proster_path);
+                $input['poster']=$proster_path;
+           }
+           else{
+            unset($input['poster']);
+           }
+           $post->update($input);
+           return redirect()->route('posts.index')->with('success','Post updated successfully');
+    
     }
 
     /**
@@ -60,6 +105,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+       return redirect()->route('posts.index')->with('success','Post deleted successfully');
+    
     }
 }
