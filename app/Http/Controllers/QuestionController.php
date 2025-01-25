@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use Illuminate\Http\Request;
-
+use App\Models\Category;
+use App\Models\Group;
 class QuestionController extends Controller
 {
     /**
@@ -12,7 +13,8 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        $questions= Question::latest()->paginate(5);
+        return view('question.index',compact('questions'))->with('1'.(request()->input('page',1) -1 )*5);
     }
 
     /**
@@ -20,7 +22,9 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+        $categories= Category::all();
+        $groups= Group::all();
+        return view('question.create',compact('groups'),compact('categories'));
     }
 
     /**
@@ -28,7 +32,17 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'=> 'required',
+            'content' =>  'required',
+            'group_id' =>  'required',
+            'category_id' =>  'required',
+           ]);
+           $input=$request->all();
+           $input['user_id']= Auth::user()->id;
+           Question::create($input);
+           return redirect()->route('posts.index')->with('success','question created successfully');
+    
     }
 
     /**
@@ -36,7 +50,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        return view('question.show',compact('question'));
     }
 
     /**
@@ -44,7 +58,9 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
-        //
+        $categories= Category::all();
+        $groups= Group::all();
+        return view('question.edit',compact('question'),compact('groups'))->with(compact('categories'));
     }
 
     /**
@@ -52,7 +68,16 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        $request->validate([
+            'title'=> 'required',
+            'content' =>  'required',
+            'group_id' =>  'required',
+            'category_id' =>  'required',
+           ]);
+           $input=$request->all();
+           $question->update($input);
+           return redirect()->route('questions.index')->with('success','question updated successfully');
+    
     }
 
     /**
@@ -60,6 +85,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+       return redirect()->route('questions.index')->with('success','question deleted successfully');
     }
 }

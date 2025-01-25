@@ -10,7 +10,7 @@
         <img id="photo_img" src="/images/img.jpg" class="card-img-top rounded-circle mx-auto d-block"
         style="width: 150px; hieght:150px;cursor: pointer;" alt="...">
         <input type="file" name="photo" id="fileInput" style="display: none;">
-        <a href="#" id="profileImage" class="btn btn-primary mb-3">Change profile photo</a>
+        <a href="#" id="profileImage" class="btn btn-primary mb-3 d-block mx-auto">Change profile photo</a>
         <h5 class="text-center">{{$user->name}}</h5>
     </div>
     <div class="col-lg-8 col-md-12 col-sm-12 text-start">
