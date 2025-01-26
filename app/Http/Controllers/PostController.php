@@ -66,7 +66,11 @@ class PostController extends Controller
         // dd($groups);
         return view('post.show',compact('post'),compact('groups'))->with(compact('posts'))->with(compact('profile'));
     }
-
+    public function public_show($slug)
+    {
+        $post = Post::where('slug', $slug)->firstOrFail();
+        return view('post.show', compact('post'));
+    }
     /**
      * Show the form for editing the specified resource.
      */

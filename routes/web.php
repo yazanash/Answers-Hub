@@ -15,6 +15,7 @@ Route::resource('/groups', App\Http\Controllers\GroupController::class);
 
 
 Route::resource('/posts', App\Http\Controllers\PostController::class)->middleware('auth');
+Route::get('/posts/{slug}', [App\Http\Controllers\PostController::class, 'public_show'])->name('posts.show.slug');
 Route::resource('/questions', App\Http\Controllers\QuestionController::class)->middleware('auth');
 Route::post('/posts/{post}/commments', [App\Http\Controllers\CommentController::class, 'store'])
 ->name('comment.store')->middleware('auth');

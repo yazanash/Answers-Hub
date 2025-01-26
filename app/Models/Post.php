@@ -15,7 +15,18 @@ class Post extends Model
         'content',
         'poster',
     ];
+    public static function boot()
+    {
+        parent::boot();
 
+        static::creating(function ($post) {
+            $post->slug = Str::slug($post->title);
+        });
+
+        static::updating(function ($post) {
+            $post->slug = Str::slug($post->title);
+        });
+    }
    /**
     * Get the user that owns the Profile
     *
