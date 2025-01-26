@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Group;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Auth;
 class PostController extends Controller
@@ -59,8 +60,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-       
-        return view('post.show',compact('post'));
+        $groups= Group::latest()->get()->take(5);
+        $posts=Post::latest()->get()->take(5);
+        $profile=$post->user->profile;
+        // dd($groups);
+        return view('post.show',compact('post'),compact('groups'))->with(compact('posts'))->with(compact('profile'));
     }
 
     /**
