@@ -40,7 +40,7 @@
             </div>
           </div>
         @endforeach
-{!!$question->links()!!}
+{!!$questions->links()!!}
 @else
 <div class="card">
 <div class="card-body">

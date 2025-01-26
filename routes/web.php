@@ -15,6 +15,6 @@ Route::resource('/groups', App\Http\Controllers\GroupController::class);
 
 
 Route::resource('/posts', App\Http\Controllers\PostController::class)->middleware('auth');
-Route::resource('/questions', App\Http\Controllers\QuestionController::class);
-
+Route::resource('/questions', App\Http\Controllers\QuestionController::class)->middleware('auth');
+Route::resource('/posts/{post}/commments', App\Http\Controllers\CommentController::class)->middleware('auth');
 Route::resource('/profile', App\Http\Controllers\ProfileController::class)->middleware('auth');

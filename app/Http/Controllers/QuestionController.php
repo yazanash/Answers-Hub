@@ -6,6 +6,7 @@ use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Group;
+use Auth;
 class QuestionController extends Controller
 {
     /**
@@ -41,7 +42,7 @@ class QuestionController extends Controller
            $input=$request->all();
            $input['user_id']= Auth::user()->id;
            Question::create($input);
-           return redirect()->route('posts.index')->with('success','question created successfully');
+           return redirect()->route('questions.index')->with('success','question created successfully');
     
     }
 
@@ -50,7 +51,11 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        return view('question.show',compact('question'));
+        $groups= Group::latest()->get()->take(5);
+        $questions=Question::latest()->get()->take(5);
+        $profile=$question->user->profile;
+        return view('question.show',compact('question'),compact('groups'))->with(compact('questions'))->with(compact('profile'));
+    
     }
 
     /**
