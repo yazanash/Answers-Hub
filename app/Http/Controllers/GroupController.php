@@ -53,7 +53,12 @@ class GroupController extends Controller
     {
         return view('group.show',compact('group'));
     }
-
+    public function public_show($slug)
+    {
+        $group = Group::where('slug', $slug)->firstOrFail();
+        return view('group.show',compact('group'));
+    
+    }
     /**
      * Show the form for editing the specified resource.
      */

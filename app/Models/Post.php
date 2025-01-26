@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Post extends Model
 {
     protected $fillable=[
@@ -14,7 +15,18 @@ class Post extends Model
         'content',
         'poster',
     ];
+    public static function boot()
+    {
+        parent::boot();
 
+        static::creating(function ($post) {
+            $post->slug = Str::slug($post->title);
+        });
+
+        static::updating(function ($post) {
+            $post->slug = Str::slug($post->title);
+        });
+    }
    /**
     * Get the user that owns the Profile
     *
@@ -31,5 +43,14 @@ class Post extends Model
    public function group(): BelongsTo
    {
        return $this->belongsTo(Group::class, 'group_id');
+   }
+   /**
+    * Get all of the comments for the Post
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+   public function comments(): HasMany
+   {
+       return $this->hasMany(Comment::class, 'post_id');
    }
 }

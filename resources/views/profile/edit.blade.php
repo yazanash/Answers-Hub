@@ -12,7 +12,7 @@
         style="width: 150px; hieght:150px;cursor: pointer;" alt="...">
         <input type="file" name="photo" id="fileInput" style="display: none;"> <br>
         <a href="#" id="profileImage" class="btn btn-primary mb-3">Change profile photo</a>
-        <h5 class="text-center">{{$user->name}}</h5>
+        <h5 class="text-start">{{$user->name}}</h5>
     </div>
     <div class="col-lg-8 col-md-12 col-sm-12 text-start">
       <div class="mb-3">

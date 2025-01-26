@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Question extends Model
 {
     protected $fillable=[
@@ -15,7 +16,18 @@ class Question extends Model
         'content',
         'solved'
     ];
+    public static function boot()
+    {
+        parent::boot();
 
+        static::creating(function ($question) {
+            $question->slug = Str::slug($question->title);
+        });
+
+        static::updating(function ($question) {
+            $question->slug = Str::slug($question->title);
+        });
+    }
    /**
     * Get the user that owns the Profile
     *
@@ -32,5 +44,14 @@ class Question extends Model
    public function group(): BelongsTo
    {
        return $this->belongsTo(Group::class, 'group_id');
+   }
+   /**
+    * Get all of the comments for the Question
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+   public function answers(): HasMany
+   {
+       return $this->hasMany(Answer::class, 'question_id');
    }
 }

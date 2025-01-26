@@ -16,38 +16,47 @@
     </div>
   @endif
     <div class="row">
-        @if ($groups->Count()>0)
-        @foreach ($groups as $group)
-        <div class="card col-3 m-1 p-1" >
-            <img src="/images/{{$group->poster}}" style="width: 120px;" class="card-img-top img-thumbnail" alt="...">
-            <div class="card-body">
-              <h5 class="card-title"><a class="fs-3" href="{{route('groups.show',$group->id)}}">
-                {{$group->name}}
-            </a></h5>
-              <p class="card-text">{{$group->description}}</p>
-              <div class="d-flex justify-content-start">
-                <a class="btn btn-primary mx-1" href="{{route('groups.edit',$group->id)}}"><i class="bi bi-pen"></i></a>
-                <form action="{{route('groups.destroy',$group->id)}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                </form>
+        
+        <div class="col-md-12">
+          <div class="row mb-2">
+            @if ($groups->Count()>0)
+              @foreach ($groups as $group)
+                <div class="col-md-6">
+                  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                      <strong class="d-inline-block mb-2 text-primary-emphasis">1.2K Post</strong>
+                      <h3 class="mb-0">{{$group->name}}</h3>
+                      <div class="mb-1 text-body-secondary">Nov 12</div>
+                      <p class="card-text mb-auto">{{$group->description}}</p>
+                      <a href="{{route('groups.show',$group->id)}}" class="icon-link gap-1 icon-link-hover stretched-link">
+                        EXPLORE 
+                        <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                      </a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                      <img src="/images/{{$group->poster}}" class="bd-placeholder-img my-auto" width="150" height="150" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"/>
+                    </div>
+                  </div>
+                </div>
+              @endforeach
+              {!!$groups->links()!!}
 
+            @else
+              <div class="card">
+              <div class="card-body">
+                  <h4 class="card-title">No Groups Added</h4>
+              </div>
               </div>
               
-            </div>
+            @endif
           </div>
-        @endforeach
-{!!$groups->links()!!}
-@else
-<div class="card">
-<div class="card-body">
-    <h4 class="card-title">No Categories Added</h4>
-</div>
-</div>
-
-@endif
+                  
+        </div>
     </div>
-    
+            <hr>
+           
 </div>
+        
+        
+
 @endsection
