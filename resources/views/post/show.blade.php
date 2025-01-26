@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container bg-white">
     <div class="row">
         <div class="col-12">
            
@@ -68,8 +68,8 @@
 
         </div>
         <div class="col-lg-4 col-md-12">
-            <div class="position-sticky" style="top: 5rem;">
-            <div class="p-2 bg-body-tertiary rounded">
+            
+            <div class="p-2 bg-white rounded mt-2">
                 <h4 >
                   About <a href="{{route('profile.show',$profile->id)}}">{{$profile->name}}</a>
                 </h4>
@@ -81,19 +81,32 @@
 
                 
                 @foreach ($posts as $post)
-                    <div class="card col-lg-12 col-md-6" >
-                        <img src="/images/{{$post->poster}}" class="card-img-top img-thumbnail" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title"><a  href="{{route('posts.show',$post->id)}}">
-                            {{$post->title}}
-                                </a>
-                            </h5>
-                            <p class="card-text">
-                                <span class="badge rounded-pill text-bg-primary">{{$post->group->name}}</span> 
-                                <span class="badge rounded-pill text-bg-success">{{$post->category->name}}</span>
-                            </p>
-                        </div>
+                <div class="col-md-12">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                      <div class="col-12 d-none d-lg-block">
+                        <img src="/images/{{$post->poster}}" class="bd-placeholder-img img-fluid"  role="img"  preserveAspectRatio="xMidYMid slice" focusable="false"></img>
+                      </div>
+                      <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary-emphasis">{{$post->group->name}}</strong>
+                        <h3 class="mb-0">{{$post->title}}</h3>
+                        {{-- <span class="badge rounded-pill text-bg-success">{{$post->category->name}}</span> --}}
+                        <div class="mb-1 text-body-secondary">{{$post->updated_at->diffForHumans()}}</div>
+                        {{-- <a class="btn btn-primary mx-1" href="{{route('posts.edit',$post->id)}}"><i class="bi bi-pen"></i></a>
+                          <form action="{{route('posts.destroy',$post->id)}}" method="POST">
+                              @csrf
+                              @method('DELETE')
+                              <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                          </form> --}}
+                         
+                          
+                        <a href="{{route('posts.show',$post->id)}}" class="icon-link gap-1 icon-link-hover stretched-link d-block">
+                          Continue reading
+                          <i class="bi bi-chevron-right"></i>
+                        </a>
+                      </div>
+                     
                     </div>
+                  </div>
                 @endforeach
             </div>
             </div>
@@ -105,7 +118,6 @@
                     @endforeach
                 </ol>
             </div>
-        </div>
         </div>
     </div>
 </div>

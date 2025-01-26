@@ -15,42 +15,86 @@
        {{$message}}
     </div>
   @endif
-    <div class="row">
-        @if ($posts->Count()>0)
-        @foreach ($posts as $post)
-        <div class="card col-12 m-1 p-1" >
-            <img src="/images/{{$post->poster}}" style="width: 120px;" class="card-img-top img-thumbnail" alt="...">
-            <div class="card-body">
-              <h5 class="card-title"><a class="fs-3" href="{{route('posts.show',$post->id)}}">
-                {{$post->title}}
-            </a></h5>
-              <p class="card-text">
-                <span class="badge rounded-pill text-bg-primary">{{$post->group->name}}</span> 
-                <span class="badge rounded-pill text-bg-success">{{$post->category->name}}</span>
-            </p>
-              <div class="d-flex justify-content-start">
-                <a class="btn btn-primary mx-1" href="{{route('posts.edit',$post->id)}}"><i class="bi bi-pen"></i></a>
-                <form action="{{route('posts.destroy',$post->id)}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                </form>
 
-              </div>
-              
-            </div>
+        <div class="row">
+          <div class="col-lg-8 col-md-12">
+              <div class="row mb-2">
+                  
+                  @if ($posts->Count()>0)
+                  @foreach ($posts as $post)
+                 
+                  <div class="col-md-6">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                      <div class="col-12 d-none d-lg-block">
+                        <img src="/images/{{$post->poster}}" class="bd-placeholder-img img-fluid"  role="img"  preserveAspectRatio="xMidYMid slice" focusable="false"></img>
+                      </div>
+                      <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary-emphasis">{{$post->group->name}}</strong>
+                        <h3 class="mb-0">{{$post->title}}</h3>
+                        {{-- <span class="badge rounded-pill text-bg-success">{{$post->category->name}}</span> --}}
+                        <div class="mb-1 text-body-secondary">{{$post->updated_at->diffForHumans()}}</div>
+                        {{-- <a class="btn btn-primary mx-1" href="{{route('posts.edit',$post->id)}}"><i class="bi bi-pen"></i></a>
+                          <form action="{{route('posts.destroy',$post->id)}}" method="POST">
+                              @csrf
+                              @method('DELETE')
+                              <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                          </form> --}}
+                         
+                          
+                        <a href="{{route('posts.show',$post->id)}}" class="icon-link gap-1 icon-link-hover stretched-link d-block">
+                          Continue reading
+                          <i class="bi bi-chevron-right"></i>
+                        </a>
+                      </div>
+                     
+                    </div>
+                  </div>
+                  
+                  @endforeach
+                </div>
+                <hr>
+                {!!$posts->links()!!}
+                @else
+                <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">No Posts Added</h4>
+                </div>
+                </div>
+                
+                @endif
           </div>
-        @endforeach
-{!!$posts->links()!!}
-@else
-<div class="card">
-<div class="card-body">
-    <h4 class="card-title">No Posts Added</h4>
-</div>
-</div>
+          <div class="col-lg-4 col-md-12">
+              <div class="row mb-2">
+                  <h3>Groups</h3>
+                  <div class="col-md-12">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                      <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary-emphasis">World</strong>
+                        <h3 class="mb-0">Featured post</h3>
+                        <div class="mb-1 text-body-secondary">Nov 12</div>
+                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
+                          Continue reading
+                          <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          
+          </div>
+  
+  
+      </div>
 
-@endif
-    </div>
+
+
+
+
+
+
+
+
     
 </div>
 @endsection

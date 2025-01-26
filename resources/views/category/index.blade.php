@@ -15,50 +15,40 @@
        {{$message}}
     </div>
   @endif
-    <div
-        class="table-responsive"
-    >
-    @if ($categories->Count()>0)
+  <div class="row">
         
-   
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Category</th>
-                    <th scope="col" width=300>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($categories as $category)
-                <tr class="">
-                    <td scope="row">{{$category->id}}</td>
-                    <td><a class="fs-3" href="{{route('categories.show',$category->id)}}">
-                        {{$category->name}}
-                    </a>
-                    </td>
-                    <td class="d-flex justify-content-start">
-                        <a class="btn btn-primary mx-1" href="{{route('categories.edit',$category->id)}}"><i class="bi bi-pen"></i></a>
-                        <form action="{{route('categories.destroy',$category->id)}}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-                
-            </tbody>
-        </table>
-        {!!$categories->links()!!}
+    <div class="col-md-12">
+      <div class="row mb-2">
+        @if ($categories->Count()>0)
+          @foreach ($categories as $category)
+            <div class="col-md-4">
+              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                  <strong class="d-inline-block mb-2 text-primary-emphasis">1.2K Post</strong>
+                  <h3 class="mb-0">{{$category->name}}</h3>
+                  <div class="mb-1 text-body-secondary">Nov 12</div>
+                  <a href="{{route('categories.show',$category->id)}}" class="icon-link gap-1 icon-link-hover stretched-link">
+                    EXPLORE 
+                    <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          @endforeach
+          {!!$categories->links()!!}
+
+        @else
+          <div class="card">
+          <div class="card-body">
+              <h4 class="card-title">No Categroies Added</h4>
+          </div>
+          </div>
+          
+        @endif
+      </div>
+              
     </div>
-    @else
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">No Categories Added</h4>
-        </div>
-    </div>
-    
-    @endif
+</div>
+        <hr>
 </div>
 @endsection

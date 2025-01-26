@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container bg-white">
     <div class="row">
         <div class="col-12">
            
@@ -75,18 +75,20 @@
             <div class="p-2">
                 <h4>Related Questions</h4>
                 @foreach ($questions as $question)
-                    <div class="card" >
-                         <div class="card-body">
-                            <h6 class="card-title"><a  href="{{route('questions.show',$question->id)}}">
-                            {{$question->title}}
-                                </a>
-                            </h6>
-                            <p class="card-text">
-                                <span class="badge rounded-pill text-bg-primary">{{$question->group->name}}</span> 
-                                <span class="badge rounded-pill text-bg-success">{{$question->category->name}}</span>
-                            </p>
-                        </div>
+                <div class="col-md-12">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                      <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary-emphasis">{{$question->group->name}}</strong>
+                        <h3 class="mb-0"> {{$question->title}}</h3>
+                        <div class="mb-1 text-body-secondary">Nov 12</div>
+                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                        <a href="{{route('questions.show',$question->id)}}" class="icon-link gap-1 icon-link-hover stretched-link">
+                          Continue reading
+                          <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                        </a>
+                      </div>
                     </div>
+                  </div>
                 @endforeach
             </div>
             <div class="p-2">
