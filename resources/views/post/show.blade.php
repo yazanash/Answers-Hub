@@ -22,7 +22,7 @@
                 {!!$post->content!!}
 
                 <hr>
-                <form action="{{route('comment.store',$post->id)}}" >
+                <form action="{{route('comment.store',$post->id)}}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="comment" class="form-label">leave a comment</label>

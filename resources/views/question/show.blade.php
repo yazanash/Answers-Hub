@@ -25,7 +25,48 @@
                 {!!$question->content!!}
 
                 <hr>
-                
+                <form action="{{route('answer.store',$question->id)}}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">leave an answer</label>
+                        <input
+                            type="text"
+                            name="content"
+                            id="comment"
+                            class="form-control"
+                            placeholder="Help your friend by provid an answer"
+                            aria-describedby="helpId"
+                        />
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Save
+                        </button>
+                        
+                    </div>
+                </form>
+                @foreach ($question->answers as $answer )
+                   
+                        <div class="p-2 row">
+                            <div class="col-1">
+                                <img id="profileImage"
+                                @if ($answer->user->profile->photo!=null) src="images/profile/{{$answer->user->profile->photo}}" @else src="/images/img.jpg" @endif
+                                  
+                                  class="card-img-top rounded-circle mx-auto d-block"
+                                  style="width: 50px; hieght:50px;" alt="...">
+                            </div>
+                            <div class="col-lg-10 col-sm-12 mx-2">
+                                <h6>by
+                                    <a href="{{route('profile.show',$answer->user->profile->id)}}">{{$answer->user->profile->name}}</a>
+                                </h6>
+                                <p>{{$answer->updated_at->diffForHumans()}}</p>
+                                <p>{{$answer->content}}</p>
+                            </div>
+                           
+                        </div>
+                    
+                @endforeach
             </article>
             
         </div>

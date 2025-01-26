@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    // $table->foreignId('')->constrained()->onDelete('cascade');
-    // $table->foreignId('')->constrained()->onDelete('cascade');
-    // $table->text('content');
     protected $fillable=[
         'user_id',
         'post_id',
@@ -26,6 +23,6 @@ class Comment extends Model
    }
    public function post(): BelongsTo
    {
-       return $this->belongsTo(User::class, 'post_id');
+       return $this->belongsTo(Post::class, 'post_id');
    }
 }

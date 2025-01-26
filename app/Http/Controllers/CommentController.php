@@ -32,7 +32,7 @@ class CommentController extends Controller
            ]);
         $input=$request->all();
         $comment->update($input);
-        return redirect()->back()->with('success','comments updated successfully');;
+        return redirect()->back()->with('success','comments updated successfully');
     }
     /**
      * Remove the specified resource from storage.

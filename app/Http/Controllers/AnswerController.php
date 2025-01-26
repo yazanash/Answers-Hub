@@ -3,56 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\Question;
 use Illuminate\Http\Request;
-
+use Auth;
 class AnswerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request,Question $question)
     {
-        //
+        $request->validate([
+            'content' =>  'required'
+           ]);
+           $input=$request->all();
+           $input['user_id']= Auth::user()->id;
+           $input['question_id']= $question->id;
+           Answer::create($input);
+           return redirect()->back();
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Answer $answer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Answer $answer)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Answer $answer)
     {
-        //
+        $request->validate([
+            'content' =>  'required'
+           ]);
+        $input=$request->all();
+        $comment->update($input);
+        return redirect()->back()->with('success','comments updated successfully');
     }
 
     /**
@@ -60,6 +42,7 @@ class AnswerController extends Controller
      */
     public function destroy(Answer $answer)
     {
-        //
+        $comment->delete();
+        return redirect()->back()->with('success','comments deleted successfully');
     }
 }
