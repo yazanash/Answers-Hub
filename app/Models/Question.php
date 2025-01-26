@@ -16,7 +16,18 @@ class Question extends Model
         'content',
         'solved'
     ];
+    public static function boot()
+    {
+        parent::boot();
 
+        static::creating(function ($question) {
+            $question->slug = Str::slug($question->title);
+        });
+
+        static::updating(function ($question) {
+            $question->slug = Str::slug($question->title);
+        });
+    }
    /**
     * Get the user that owns the Profile
     *

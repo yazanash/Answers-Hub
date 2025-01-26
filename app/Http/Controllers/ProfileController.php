@@ -61,7 +61,11 @@ class ProfileController extends Controller
 
         return view('profile.show',compact('profile'));
     }
-
+    public function public_show($slug)
+    {
+        $profile = Profile::where('slug', $slug)->firstOrFail();
+        return view('profile.show', compact('profile'));
+    }
     /**
      * Show the form for editing the specified resource.
      */

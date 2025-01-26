@@ -18,7 +18,18 @@ class Profile extends Model
         'svu_email',
         'photo'
     ];
+    public static function boot()
+    {
+        parent::boot();
 
+        static::creating(function ($profile) {
+            $profile->slug = Str::slug($profile->name);
+        });
+
+        static::updating(function ($profile) {
+            $profile->slug = Str::slug($profile->name);
+        });
+    }
    /**
     * Get the user that owns the Profile
     *

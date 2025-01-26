@@ -57,7 +57,15 @@ class QuestionController extends Controller
         return view('question.show',compact('question'),compact('groups'))->with(compact('questions'))->with(compact('profile'));
     
     }
-
+    public function public_show($slug)
+    {
+        $question = Question::where('slug', $slug)->firstOrFail();
+        $groups= Group::latest()->get()->take(5);
+        $questions=Question::latest()->get()->take(5);
+        $profile=$question->user->profile;
+        return view('question.show',compact('question'),compact('groups'))->with(compact('questions'))->with(compact('profile'));
+    
+    }
     /**
      * Show the form for editing the specified resource.
      */

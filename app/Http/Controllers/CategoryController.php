@@ -44,7 +44,12 @@ class CategoryController extends Controller
     {
         return view('category.show',compact('category'));
     }
-
+    public function public_show($slug)
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
+        return view('category.show',compact('category'));
+    
+    }
     /**
      * Show the form for editing the specified resource.
      */
