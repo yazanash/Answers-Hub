@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Answer extends Model
 {
     protected $fillable=[
@@ -25,4 +26,14 @@ class Answer extends Model
    {
        return $this->belongsTo(Question::class, 'question_id');
    }
+   /**
+    * The roles that belong to the Answer
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    */
+   public function helpfulVotes(): BelongsToMany
+   {
+       return $this->belongsToMany(User::class, 'helpful_votes', 'answer_id');
+   }
+  
 }

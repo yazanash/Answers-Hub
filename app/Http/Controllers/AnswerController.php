@@ -45,4 +45,10 @@ class AnswerController extends Controller
         $comment->delete();
         return redirect()->back()->with('success','comments deleted successfully');
     }
+    public function markAsHelpful(Request $request, Answer $answer)
+{
+    $user = $request->user();
+    $answer->helpfulVotes()->syncWithoutDetaching([$user->id]);
+    return redirect()->back();
+}
 }

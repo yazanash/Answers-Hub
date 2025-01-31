@@ -29,3 +29,6 @@ Route::get('/posts/{slug}', [App\Http\Controllers\PostController::class, 'public
 Route::get('/groups/{slug}', [App\Http\Controllers\GroupController::class, 'public_show'])->name('groups.show.slug');
 Route::get('/questions/{slug}', [App\Http\Controllers\QuestionController::class, 'public_show'])->name('question.show.slug');
 Route::get('/categories/{slug}', [App\Http\Controllers\CategoryController::class, 'public_show'])->name('categories.show.slug');
+
+Route::post('/answers/{answer}/helpful', [App\Http\Controllers\AnswerController::class, 'markAsHelpful'])->name('answer.helpful');
+Route::post('/upload-image', [App\Http\Controllers\ImageUploadController::class, 'upload']);

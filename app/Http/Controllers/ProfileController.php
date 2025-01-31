@@ -45,7 +45,7 @@ class ProfileController extends Controller
            if($photo=$request->file('photo')){
             $destination_path="images/profile/";
             $photo_path = date('YmdHis').".".$photo->getClientOriginalExtension();
-            $photo->move($destination_path,$profile_path);
+            $photo->move($destination_path,$photo_path);
             $input['photo']=$photo_path;
        }
            $input['user_id']= Auth::user()->id;
