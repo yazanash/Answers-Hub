@@ -27,8 +27,14 @@ Route::resource('/profile', App\Http\Controllers\ProfileController::class)->midd
 Route::get('/profile/{slug}', [App\Http\Controllers\ProfileController::class, 'public_show'])->name('profiles.show.slug');
 Route::get('/posts/{slug}', [App\Http\Controllers\PostController::class, 'public_show'])->name('posts.show.slug');
 Route::get('/groups/{slug}', [App\Http\Controllers\GroupController::class, 'public_show'])->name('groups.show.slug');
-Route::get('/questions/{slug}', [App\Http\Controllers\QuestionController::class, 'public_show'])->name('question.show.slug');
-Route::get('/categories/{slug}', [App\Http\Controllers\CategoryController::class, 'public_show'])->name('categories.show.slug');
+Route::get('/question/{slug}', [App\Http\Controllers\QuestionController::class, 'public_show'])->name('question.show.slug');
+Route::get('/category/{slug}', [App\Http\Controllers\CategoryController::class, 'public_show'])->name('category.show.slug');
 
 Route::post('/answers/{answer}/helpful', [App\Http\Controllers\AnswerController::class, 'markAsHelpful'])->name('answer.helpful');
 Route::post('/upload-image', [App\Http\Controllers\ImageUploadController::class, 'upload']);
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/subscribe', [App\Http\Controllers\SubscriptionController::class, 'subscribe'])->name('subscribe');
+    Route::post('/unsubscribe', [App\Http\Controllers\SubscriptionController::class, 'unsubscribe'])->name('unsubscribe');
+});

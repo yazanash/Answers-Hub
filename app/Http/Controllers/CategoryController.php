@@ -46,6 +46,7 @@ class CategoryController extends Controller
     }
     public function public_show($slug)
     {
+        
         $category = Category::where('slug', $slug)->firstOrFail();
         return view('category.show',compact('category'));
     

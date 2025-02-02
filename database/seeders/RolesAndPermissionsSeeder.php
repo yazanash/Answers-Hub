@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\User;
 class RolesAndPermissionsSeeder extends Seeder
 {
     /**
@@ -21,48 +22,35 @@ class RolesAndPermissionsSeeder extends Seeder
         // Create permissions
         $permissions = [
             'manage users',
-
-            'create group',
-            'edit group',
-            'delete group',
-            'publish group',
-            'view group',
-
-            'create category',
-            'edit category',
-            'delete category',
-            'publish category',
-            'view category',
-
-            'create post',
-            'edit post',
-            'delete post',
-            'publish post',
-            'view post',
-
-            'create question',
-            'edit question',
-            'delete question',
-            'publish question',
-            'view question',
-
-            'create comment',
-            'edit comment',
-            'replay comment',
-
-            'create vote',
-            'create answer',
-            'edit answer',
-            'replay answer',
+            'manage posts',
+            'manage questions',
+            'manage answers',
+            'manage comments',
+            'manage groups',
+            'manage categories',
+            'manage own posts',
+            'manage own questions',
+            'manage own answers',
+            'manage own comments'
         ];
-
+       
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission]);
         }
 
         // Assign permissions to roles
         $adminRole->givePermissionTo(Permission::all());
-        $editorRole->givePermissionTo(['edit articles', 'view articles']);
-        $userRole->givePermissionTo(['view articles']);
+        $editorRole->givePermissionTo([ 
+           'manage own posts',
+            'manage own questions',
+            'manage own answers',
+            'manage own comments']);
+        $userRole->givePermissionTo([
+            'manage own questions',
+            'manage own answers',
+            'manage own comments'
+        ]);
+        $user = User::find(1);
+        $user->assignRole('admin');
     }
 }

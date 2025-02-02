@@ -46,7 +46,7 @@
           </select>
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Content</label>
-            <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="10">
+            <textarea class="form-control" name="content"   id="editor" rows="10">
                 {!! $question->content !!}
             </textarea>
           </div>
@@ -58,5 +58,42 @@
         <a class="btn btn-danger" href="{{route('questions.index')}}" >Cancel </a>
       </form>
     </div>
-
+    <script>
+      var easyMDE = new EasyMDE({
+           element: document.getElementById('editor'),
+           toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link","upload-image", "image", "|", "preview", "side-by-side", "fullscreen"],
+           minHeight: "50px", // Set the minimum height
+           maxHeight: "300px", // Set the maximum height
+           uploadImage: true,
+           imageUploadEndpoint: '/upload-image', 
+           imageUploadFunction: function(file, onSuccess, onError) {
+               var formData = new FormData();
+               formData.append('image', file);
+   
+               fetch('/upload-image', {
+                   method: 'POST',
+                   body: formData,
+                   headers: {
+                       'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                   }
+               })
+               .then(response => response.json())
+               .then(data => {
+                   if (data.success) {
+                       onSuccess(data.url);
+                   } else {
+                       onError(data.message);
+                   }
+               })
+               .catch(error => {
+                   onError(error.message);
+                   console.log(error.message);
+                   
+               });
+           },
+       });
+   </script>
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+   <script src="{{ asset('js/share.js') }}"></script>
+   <script src="https://kit.fontawesome.com/bc897fcb31.js" crossorigin="anonymous"></script>
 @endsection

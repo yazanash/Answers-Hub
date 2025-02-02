@@ -6,7 +6,6 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
     <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
@@ -30,11 +29,12 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md sticky-top navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
+                    <img src="/images/logo.jpg" alt="" width="50" height="50">
                     {{ config('app.name', 'Laravel') }}
-                </a>
+                  </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -102,7 +102,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 bg-white">
             @yield('content')
         </main>
     </div>

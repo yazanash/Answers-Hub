@@ -8,7 +8,7 @@
           <a class="nav-item nav-link link-body-emphasis active" href="#">All</a>
 
           @foreach ($categories as $category)
-          <a class="nav-item nav-link link-body-emphasis" href="{{route('categories.show.slug',$category->slug)}}">{{$category->name}}</a>
+          <a class="nav-item nav-link link-body-emphasis" href="{{route('category.show.slug',$category->slug)}}">{{$category->name}}</a>
           @endforeach
         </nav>
       </div>
@@ -16,6 +16,7 @@
         <div class="col-lg-8 col-md-12">
             <div class="row mb-2">
                 <h3>Posts</h3>
+                <hr>
                 <div class="row mb-2">
                   
                   @foreach ($posts as $post)
@@ -27,7 +28,8 @@
                       </div>
                       <div class="col p-4 d-flex flex-column position-static">
                         <strong class="d-inline-block mb-2 text-primary-emphasis">{{$post->group->name}}</strong>
-                        <h3 class="mb-0">{{$post->title}}</h3>
+                        <strong class="d-inline-block mb-2 text-success-emphasis">{{$post->category->name}}</strong>
+                        <h5 class="mb-0">{{$post->title}}</h5>
                         {{-- <span class="badge rounded-pill text-bg-success">{{$post->category->name}}</span> --}}
                         <div class="mb-1 text-body-secondary">{{$post->updated_at->diffForHumans()}}</div>
                         {{-- <a class="btn btn-primary mx-1" href="{{route('posts.edit',$post->id)}}"><i class="bi bi-pen"></i></a>
@@ -57,18 +59,20 @@
         <div class="col-lg-4 col-md-12">
             <div class="row mb-2">
                 <h3>Question</h3>
+                <hr>
                 <div class="row mb-2">
                   @foreach ($questions as $question)
                   <div class="col-md-12">
                     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                       <div class="col p-4 d-flex flex-column position-static">
                         <strong class="d-inline-block mb-2 text-primary-emphasis">{{$question->group->name}}</strong>
-                        <h3 class="mb-0"> {{$question->title}}</h3>
-                        <div class="mb-1 text-body-secondary">Nov 12</div>
-                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                        <h5 class="mb-0"> {{$question->title}}</h5>
+                        <div class="mb-1 text-body-secondary">{{$question->updated_at->diffForHumans()}}</div>
+                        <strong class="d-inline-block mb-2 text-success-emphasis">{{$question->category->name}}</strong>
+                        
                         <a href="{{route('questions.show',$question->id)}}" class="icon-link gap-1 icon-link-hover stretched-link">
                           Continue reading
-                          <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                          <i class="bi bi-chevron-right"></i>
                         </a>
                       </div>
                     </div>

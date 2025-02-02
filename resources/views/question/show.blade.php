@@ -13,6 +13,14 @@
                     <span class="badge rounded-pill text-bg-success px-3 py-2">Solved</span>
                     @endif
                 </h2>
+                <div class="d-flex flex-row py-2">
+                    <a href="{{route('questions.edit',$question->id)}}" class="btn btn-primary mx-1"><i class="bi bi-pen"></i></a>
+                    <form action="{{route('questions.destroy',$question->id)}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger mx-1"><i class="bi bi-trash"></i></button>
+                    </form>
+                </div>
                 <p>
                     {{$question->updated_at->diffForHumans()}}
                     by <a href="{{route('profile.show',$profile->id)}}">{{$profile->name}}</a>
@@ -23,7 +31,34 @@
                 </p>
                 <hr>
                 {!!$question->content!!}
-
+                <hr>
+                <div class="d-flex justify-content-start">
+                    <!-- Facebook -->
+            <a data-mdb-ripple-init class="btn text-white mx-2" style="background-color: #3b5998;" href="{{ $shareLinks['facebook'] }}" role="button"
+            ><i class="fab fa-facebook-f"></i
+            ></a>
+            
+            <!-- Twitter -->
+            <a data-mdb-ripple-init class="btn text-white mx-2" style="background-color: #55acee;" href="{{ $shareLinks['twitter'] }}" role="button"
+            ><i class="fab fa-twitter"></i
+            ></a>
+            
+            <!-- Linkedin -->
+            <a data-mdb-ripple-init class="btn text-white mx-2" style="background-color: #0082ca;" href="{{ $shareLinks['linkedin'] }}" role="button"
+            ><i class="fab fa-linkedin-in"></i
+            ></a>
+            
+            <!-- Reddit -->
+            <a data-mdb-ripple-init class="btn text-white mx-2" style="background-color: #ff4500;" href="{{ $shareLinks['reddit'] }}" role="button"
+            ><i class="fab fa-reddit-alien"></i
+            ></a>
+            
+            <!-- Whatsapp -->
+            <a data-mdb-ripple-init class="btn text-white mx-2" style="background-color: #25d366;" href="{{ $shareLinks['whatsapp'] }}" role="button"
+            ><i class="fab fa-whatsapp"></i
+            ></a>
+            </div>
+            
                 <hr>
                 <form action="{{route('answer.store',$question->id)}}" method="POST">
                     @csrf
@@ -146,5 +181,7 @@
         },
     });
 </script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+<script src="{{ asset('js/share.js') }}"></script>
+<script src="https://kit.fontawesome.com/bc897fcb31.js" crossorigin="anonymous"></script>
 @endsection
