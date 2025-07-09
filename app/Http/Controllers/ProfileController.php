@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Auth;
 class ProfileController extends Controller
@@ -12,13 +13,17 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::user(); 
         if($user->profile==null){
 
             return redirect()->route('profile.create');
         }
         $profile = $user->profile;
-        return view('profile.show',compact('user'),compact('profile'));
+        $posts = $user->posts;
+        $questions = $user->questions;
+        $votes = $user->helpfulVotes;
+        return view('profile.show',compact('user'),compact('profile'))->with(compact('posts'))
+        ->with(compact('votes'))->with(compact('questions'));
     }
 
     /**
@@ -58,8 +63,13 @@ class ProfileController extends Controller
      */
     public function show(Profile $profile)
     {
-
-        return view('profile.show',compact('profile'));
+        $user = $profile->user; 
+        $posts = $user->posts;
+        $questions = $user->questions;
+        $votes = $user->helpfulVotes;
+        return view('profile.show',compact('user'),compact('profile'))->with(compact('posts'))
+        ->with(compact('votes'))->with(compact('questions'));
+       
     }
     public function public_show($slug)
     {
@@ -86,6 +96,7 @@ class ProfileController extends Controller
             'bio'=> 'required',
             'gender'=> 'required'
            ]);
+        //    dd($request);
            $input=$request->all();
            if($photo=$request->file('photo')){
             $destination_path="images/profile";

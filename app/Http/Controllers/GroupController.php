@@ -53,7 +53,9 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        return view('group.show',compact('group'));
+        $posts=$group->posts;
+        $questions=$group->questions;
+        return view('group.show',compact('group','questions','posts'));
     }
     public function public_show($slug)
     {

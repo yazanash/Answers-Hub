@@ -2,13 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\MainController::class, 'index']); 
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Auth::routes(['verify' => true]);
+Route::get('/home', fn() => redirect('/home/article'))->name('home');
+Route::get('/home/{type}/{slug?}', [App\Http\Controllers\HomeController::class, 'index'])->name('home.article')->middleware('verified');
 
 Route::resource('/categories', App\Http\Controllers\CategoryController::class);
 Route::resource('/groups', App\Http\Controllers\GroupController::class);
@@ -33,7 +32,9 @@ Route::get('/category/{slug}', [App\Http\Controllers\CategoryController::class, 
 Route::post('/answers/{answer}/helpful', [App\Http\Controllers\AnswerController::class, 'markAsHelpful'])->name('answer.helpful');
 Route::post('/upload-image', [App\Http\Controllers\ImageUploadController::class, 'upload']);
 
-
+Route::get('/admin/user-management', [App\Http\Controllers\AdminController::class, 'showUserManagement'])->name('admin.user-management');
+Route::post('/admin/user-management', [App\Http\Controllers\AdminController::class, 'setUserRole'])->name('admin.set-user-role');
+Route::post('/admin/user-management/update/{user}', [App\Http\Controllers\AdminController::class, 'updateUserRole'])->name('admin.update-user-role');
 Route::middleware(['auth'])->group(function () {
     Route::post('/subscribe', [App\Http\Controllers\SubscriptionController::class, 'subscribe'])->name('subscribe');
     Route::post('/unsubscribe', [App\Http\Controllers\SubscriptionController::class, 'unsubscribe'])->name('unsubscribe');

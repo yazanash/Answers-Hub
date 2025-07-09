@@ -6,13 +6,25 @@
     @csrf
     @method('PUT')
   <div class="row">
-    <div class="col-lg-4 col-md-12 col-sm-12 text-start" >
-      
-        <img id="photo_img" src="/images/img.jpg" class="card-img-top rounded-circle "
-        style="width: 150px; hieght:150px;cursor: pointer;" alt="...">
-        <input type="file" name="photo" id="fileInput" style="display: none;"> <br>
-        <a href="#" id="profileImage" class="btn btn-primary mb-3">Change profile photo</a>
-        <h5 class="text-start">{{$user->name}}</h5>
+    <div class="col-lg-3 col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-start" >
+       <div class="d-flex flex-column align-items-center justify-content-start">
+                    <input type="file" id="photo" name="photo" accept="image/*" style="display: none;"
+                        onchange="previewImage(event)">
+
+                    <label for="photo" style="cursor: pointer;">
+                        <img id="preview" 
+                        @if ($profile->photo != null)
+                          src="{{ asset('images/profile/' .$profile->photo) }}" alt="اختر صورة"
+                        @else
+                          src="{{ asset('images/img.jpg') }}" alt="اختر صورة"
+                        @endif
+
+                        
+                            class="rounded-circle" style="height: 150px;width:150px; object-fit: cover;">
+                    </label>
+                    <p class="text-muted mt-2">انقر على الصورة لتغييرها</p>
+                </div>
+        <h3 class="text-start text-primary fw-bold">{{$user->name}}</h3>
     </div>
     <div class="col-lg-8 col-md-12 col-sm-12 text-start">
       <div class="mb-3">
@@ -60,19 +72,20 @@
 
 </div>
 <script>
-  document.getElementById('profileImage').addEventListener('click', function() {
-  document.getElementById('fileInput').click();
-});
+  function previewImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('preview');
 
-document.getElementById('fileInput').addEventListener('change', function(event) {
-  const file = event.target.files[0];
-  if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-          document.getElementById('photo_img').src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-  }
-});
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 </script>
 @endsection
