@@ -8,11 +8,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Profile;
 use App\Models\Post;
+use App\Models\Question;
+use App\Models\Group;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Permission\Traits\HasRoles;
-class User extends Authenticatable
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -68,6 +72,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class, 'user_id');
     }
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class, 'user_id');
+    }
     /**
      * The roles that belong to the User
      *
@@ -76,5 +84,14 @@ class User extends Authenticatable
     public function helpfulVotes(): BelongsToMany
     {
         return $this->belongsToMany(Answer::class, 'helpful_votes', 'user_id');
+    }
+    /**
+     * The roles that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'subscriptions', 'user_id');
     }
 }

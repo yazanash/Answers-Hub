@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Group;
 use Auth;
+use Share;
+use App\Models\Subscription;
+use App\Notifications\NewQuestionNotification;
 class QuestionController extends Controller
 {
     /**
@@ -41,7 +44,12 @@ class QuestionController extends Controller
            ]);
            $input=$request->all();
            $input['user_id']= Auth::user()->id;
-           Question::create($input);
+           $question = Question::create($input);
+           $subscriptions = Subscription::where('group_id', $question->group_id)->get();
+
+           foreach ($subscriptions as $subscription) {
+               $subscription->user->notify(new NewQuestionNotification($question));
+           }
            return redirect()->route('questions.index')->with('success','question created successfully');
     
     }
@@ -54,7 +62,15 @@ class QuestionController extends Controller
         $groups= Group::latest()->get()->take(5);
         $questions=Question::latest()->get()->take(5);
         $profile=$question->user->profile;
-        return view('question.show',compact('question'),compact('groups'))->with(compact('questions'))->with(compact('profile'));
+        $shareLinks = Share::page(route('question.show.slug',$question->slug))
+        ->facebook()
+        ->twitter()
+        ->linkedin()
+        ->whatsapp()
+        ->reddit()
+        ->getRawLinks();
+        return view('question.show',compact('question'),compact('groups'))
+        ->with(compact('questions'))->with(compact('profile'))->with(['shareLinks' => $shareLinks]);
     
     }
     public function public_show($slug)
@@ -63,7 +79,15 @@ class QuestionController extends Controller
         $groups= Group::latest()->get()->take(5);
         $questions=Question::latest()->get()->take(5);
         $profile=$question->user->profile;
-        return view('question.show',compact('question'),compact('groups'))->with(compact('questions'))->with(compact('profile'));
+        $shareLinks = Share::page(route('question.show.slug',$question->slug))
+        ->facebook()
+        ->twitter()
+        ->linkedin()
+        ->whatsapp()
+        ->reddit()
+        ->getRawLinks();
+        return view('question.show',compact('question'),compact('groups'))
+        ->with(compact('questions'))->with(compact('profile'))->with(['shareLinks' => $shareLinks]);
     
     }
     /**

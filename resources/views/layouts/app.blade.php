@@ -6,7 +6,6 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
     <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
@@ -28,55 +27,52 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body>
+<body style="background:#f0f0f0;">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md sticky-top navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
+                     <img src="/images/logo.png" alt="Bootstrap" width="80" height="45">
+                  </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
+ @auth
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{route('home')}}">Home</a>
+                            <a class="nav-link fw-bold active" aria-current="page" href="{{route('home')}}"><i
+                                class="bi bi-house-door mx-1"></i>Home</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{route('questions.index')}}">Q&A</a>
+                            <a class="nav-link fw-bold"  aria-current="page" href="{{route('groups.index')}}"><i class="bi bi-people mx-1"></i>Groups</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{route('posts.index')}}">Posts</a>
+                            <a class="nav-link fw-bold" aria-current="page" href="{{route('categories.index')}}"><i class="bi bi-grid-3x3-gap mx-1"></i>Categories</a>
                           </li>
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{route('groups.index')}}">Groups</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{route('categories.index')}}">Categories</a>
+                           <li class="nav-item">
+                            <a class="nav-link fw-bold" aria-current="page" href="{{route('admin.user-management')}}"><i class="bi bi-person-check mx-1"></i>Admins</a>
                           </li>
                     </ul>
-
+                   
+                    <form class="p-2 bg-white me-2 ">
+                        <div class="input-group">
+                          <input type="text" class="form-control" placeholder="Search here ..." aria-label="Search" aria-describedby="button-addon2">
+                          <button class="btn btn-primary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                   <img id="profileImage" width="30" height="30"
+               @if (Auth::user()->profile->photo!=null) src="{{ asset('images/profile/' . Auth::user()->profile->photo) }}" @else src="{{ asset('images/img.jpg') }}" @endif
+                 
+                 class="rounded-circle m-1 "
+                 alt="...">
+                                   
                                     {{ Auth::user()->name }}
                                 </a>
 
@@ -96,13 +92,44 @@
                                     </a>
                                 </div>
                             </li>
-                        @endguest
+                       
                     </ul>
+                  
                 </div>
+                @else
+                 <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
+                 @if (Route::has('login'))
+                            <a href="{{ route('login') }}" class="btn btn-outline-primary" type="submit">Login <i
+                                    class="bi bi-box-arrow-in-right"></i></a>
+                        @endif
+                        @if (Route::has('register'))
+                            <div class="vr mx-1"></div>
+                            <a href="{{ route('register') }}" class="btn btn-primary" type="submit">Create New Account <i
+                                    class="bi bi-arrow-right"></i></a>
+                        @endif
+                 </div>
+                  @endauth
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4" style="background:#f0f0f0;">
+            @if (session('resent'))
+            <div class="alert alert-success" role="alert">
+                A fresh verification link has been sent to your email address.
+            </div>
+        @endif
+        @auth
+            @if (!auth()->user()->hasVerifiedEmail())
+            <div class="alert alert-warning" role="alert">
+                Your email address is not verified.
+
+                <form action="{{ route('verification.resend') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-link p-0 m-0 align-baseline">Click here to resend verification email</button>.
+                </form>
+            </div>
+            @endif
+        @endauth
             @yield('content')
         </main>
     </div>

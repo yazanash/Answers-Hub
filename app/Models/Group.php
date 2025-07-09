@@ -28,16 +28,16 @@ class Group extends Model
      */
     public function posts(): HasMany
     {
-        return $this->hasMany(Post::class, 'category_id');
+        return $this->hasMany(Post::class, 'group_id');
     }
      /**
      * Get all of the comments for the Category
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function question(): HasMany
+    public function questions(): HasMany
     {
-        return $this->hasMany(Question::class, 'category_id');
+        return $this->hasMany(Question::class, 'group_id');
     }
     
 }

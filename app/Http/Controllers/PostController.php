@@ -8,6 +8,9 @@ use App\Models\Group;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Auth;
+use Share;
+use App\Models\Subscription;
+use App\Notifications\NewPostNotification;
 class PostController extends Controller
 {
     /**
@@ -50,7 +53,12 @@ class PostController extends Controller
                 $input['poster']=$proster_path;
            }
            $input['user_id']= Auth::user()->id;
-           Post::create($input);
+           $post = Post::create($input);
+           $subscriptions = Subscription::where('group_id', $post->group_id)->get();
+
+           foreach ($subscriptions as $subscription) {
+               $subscription->user->notify(new NewPostNotification($post));
+           }
            return redirect()->route('posts.index')->with('success','Post created successfully');
     
     }
@@ -64,12 +72,31 @@ class PostController extends Controller
         $posts=Post::latest()->get()->take(5);
         $profile=$post->user->profile;
         // dd($groups);
-        return view('post.show',compact('post'),compact('groups'))->with(compact('posts'))->with(compact('profile'));
+        $shareLinks = Share::page(route('posts.show.slug',$post->slug))
+    ->facebook()
+    ->twitter()
+    ->linkedin()
+    ->whatsapp()
+    ->reddit()
+    ->getRawLinks();
+        return view('post.show',compact('post'),compact('groups'))
+        ->with(compact('posts'))->with(compact('profile'))->with(['shareLinks' => $shareLinks]);
     }
     public function public_show($slug)
     {
         $post = Post::where('slug', $slug)->firstOrFail();
-        return view('post.show', compact('post'));
+        $groups= Group::latest()->get()->take(5);
+        $posts=Post::latest()->get()->take(5);
+        $profile=$post->user->profile;
+        $shareLinks = Share::page(route('posts.show.slug',$post->slug))
+        ->facebook()
+        ->twitter()
+        ->linkedin()
+        ->whatsapp()
+        ->reddit()
+        ->getRawLinks();
+        return view('post.show', compact('post'),compact('groups'))->with(compact('profile'))->with(compact('posts'))
+        ->with(['shareLinks' => $shareLinks]);
     }
     /**
      * Show the form for editing the specified resource.

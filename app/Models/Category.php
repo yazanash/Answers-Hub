@@ -34,7 +34,7 @@ class Category extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function question(): HasMany
+    public function questions(): HasMany
     {
         return $this->hasMany(Question::class, 'category_id');
     }

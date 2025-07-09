@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
-
+use Auth;
 class GroupController extends Controller
 {
     /**
@@ -12,8 +13,9 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups= Group::latest()->paginate(5);
-        return view('group.index',compact('groups'))->with('1'.(request()->input('page',1) -1 )*5);
+        $groups= Group::latest()->paginate(10);
+        $subscriptions = Subscription::where('user_id', Auth::user()->id)->pluck('group_id')->toArray();
+        return view('group.index',compact('groups','subscriptions'))->with('1'.(request()->input('page',1) -1 )*10);
     }
 
     /**
@@ -51,7 +53,9 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        return view('group.show',compact('group'));
+        $posts=$group->posts;
+        $questions=$group->questions;
+        return view('group.show',compact('group','questions','posts'));
     }
     public function public_show($slug)
     {
