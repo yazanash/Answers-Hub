@@ -57,7 +57,7 @@
                     <div class="col-12">
                     <div class="my-2">
                         <label for="exampleFormControlTextarea1" class="form-label fs-4">Write an awesome Article</label>
-                        <textarea required class="form-control" name="content" id="editor" rows="3"></textarea>
+                        <textarea class="form-control" name="content" id="editor" rows="3"></textarea>
                     </div>
                 </div>
                   </div>

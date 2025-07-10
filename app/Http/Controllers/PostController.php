@@ -61,7 +61,7 @@ class PostController extends Controller
                $subscription->user->notify(new NewPostNotification($post));
            }
            event(new PostCreated($post)); // send question created event
-           return redirect()->route('posts.index')->with('success','Post created successfully');
+           return redirect()->route('posts.show',$post->id)->with('success','Post created successfully');
     
     }
 
@@ -132,7 +132,7 @@ class PostController extends Controller
             unset($input['poster']);
            }
            $post->update($input);
-           return redirect()->route('posts.index')->with('success','Post updated successfully');
+           return redirect()->route('posts.show',$post->id)->with('success','Post updated successfully');
     
     }
 
@@ -142,7 +142,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-       return redirect()->route('posts.index')->with('success','Post deleted successfully');
+       return redirect()->route('home')->with('success','Post deleted successfully');
     
     }
 }

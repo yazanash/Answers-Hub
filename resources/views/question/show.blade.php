@@ -77,7 +77,7 @@
                         <div class="p-2 row">
                             <div class="col-1">
                                 <img id="profileImage"
-                                    @if ($answer->user->profile->photo != null) src="{{asset('images/profile/'. $answer->user->profile->photo)}}" @else src="/images/img.jpg" @endif
+                                    @if ($answer->user->profile->photo != null) src="{{asset('images/profile/'. $answer->user->profile->photo)}}" @else src="{{asset('images/img.jpg')}}" @endif
                                     class="card-img-top rounded-circle mx-auto d-block" style="width: 50px; hieght:50px;"
                                     alt="...">
                             </div>

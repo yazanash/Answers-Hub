@@ -54,7 +54,8 @@ class QuestionController extends Controller
                $subscription->user->notify(new NewQuestionNotification($question));
            }
             event(new QuestionCreated($question)); // send question created event
-           return redirect()->route('questions.index')->with('success','question created successfully');
+           return redirect()->route('questions.show',$question->id)->with('success','question created successfully');
+
     
     }
 
@@ -117,7 +118,7 @@ class QuestionController extends Controller
            ]);
            $input=$request->all();
            $question->update($input);
-           return redirect()->route('questions.index')->with('success','question updated successfully');
+           return redirect()->route('questions.show',$question->id)->with('success','question updated successfully');
     
     }
 
@@ -127,6 +128,6 @@ class QuestionController extends Controller
     public function destroy(Question $question)
     {
         $question->delete();
-       return redirect()->route('questions.index')->with('success','question deleted successfully');
+       return redirect()->route('home')->with('success','question deleted successfully');
     }
 }
