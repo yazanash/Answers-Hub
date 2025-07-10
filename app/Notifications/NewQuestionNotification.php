@@ -36,7 +36,7 @@ class NewQuestionNotification extends Notification
     {
         return (new MailMessage)
                     ->line($this->question->title)
-                    ->action('Notification Action', route('question.show.slug',$this->question->slug))
+                    ->action('Notification Action', route('question.show',$this->question->id))
                     ->line('Thank you for using our application!');
     }
 

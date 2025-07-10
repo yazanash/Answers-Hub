@@ -83,7 +83,7 @@
                             <div class="p-2 row">
                                 <div class="col-1">
                                     <img id="profileImage"
-                                        @if ($comment->user->profile->photo != null) src="images/profile/{{ $comment->user->profile->photo }}" @else src="/images/img.jpg" @endif
+                                        @if ($comment->user->profile->photo != null) src="{{asset('images/profile/' . $comment->user->profile->photo) }}" @else src="{{asset('images/img.jpg')}}" @endif
                                         class="card-img-top rounded-circle mx-auto d-block"
                                         style="width: 50px; hieght:50px;" alt="...">
                                 </div>

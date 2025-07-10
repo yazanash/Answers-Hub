@@ -36,7 +36,7 @@ class NewPostNotification extends Notification
     {
         return (new MailMessage)
                     ->line($this->post->title)
-                    ->action('Notification Action',route('posts.show.slug',$this->post->slug))
+                    ->action('Notification Action',route('posts.show',$this->post->id))
                     ->line('Thank you for using our application!');
     }
 
