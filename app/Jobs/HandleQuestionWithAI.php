@@ -34,7 +34,7 @@ class HandleQuestionWithAI implements ShouldQueue
         if (strlen($question->content) < 10) return;
 
         // جلب البوت
-        $bot = User::where('email', 'yazan.ash.doonaas@gmail.com')->first();
+        $bot = User::where('email', 'bot@answers-hub.com')->first();
         if (!$bot) return;
 
         // إرسال للذكاء الاصطناعي
