@@ -10,6 +10,7 @@ use Auth;
 use Share;
 use App\Models\Subscription;
 use App\Notifications\NewQuestionNotification;
+use App\Events\QuestionCreated;
 class QuestionController extends Controller
 {
     /**
@@ -17,6 +18,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
+       
         $questions= Question::latest()->paginate(5);
         return view('question.index',compact('questions'))->with('1'.(request()->input('page',1) -1 )*5);
     }
@@ -28,6 +30,7 @@ class QuestionController extends Controller
     {
         $categories= Category::all();
         $groups= Group::all();
+        
         return view('question.create',compact('groups'),compact('categories'));
     }
 
@@ -50,6 +53,7 @@ class QuestionController extends Controller
            foreach ($subscriptions as $subscription) {
                $subscription->user->notify(new NewQuestionNotification($question));
            }
+            event(new QuestionCreated($question)); // send question created event
            return redirect()->route('questions.index')->with('success','question created successfully');
     
     }

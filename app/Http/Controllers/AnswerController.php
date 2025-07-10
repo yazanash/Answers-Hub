@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Notifications\CommentAdded;
 use Auth;
 class AnswerController extends Controller
 {
@@ -22,6 +23,13 @@ class AnswerController extends Controller
            $input['user_id']= Auth::user()->id;
            $input['question_id']= $question->id;
            Answer::create($input);
+           if ($question->user_id !== auth()->id()) {
+                $question->user->notify(new CommentAdded(
+                     'Add Answer on your qustion',
+                    route('questions.show', $question->id),
+                    Auth::user()->profile->name
+                ));
+}
            return redirect()->back();
     }
     /**

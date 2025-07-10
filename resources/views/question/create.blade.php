@@ -30,7 +30,7 @@
                 <div class="col">
                     <div class="input-group">
                         <span class="input-group-text">Group:</span>
-                        <select required class="form-select" name="group_id">
+                        <select class="form-select" name="group_id">
                             <option selected>Not selected</option>
                             @foreach ($groups as $group)
                                 <option value="{{ $group->id }}">{{ $group->name }}</option>
@@ -44,7 +44,7 @@
                 <div class="col">
                     <div class="input-group">
                         <span class="input-group-text">Category:</span>
-                        <select required class="form-select" name="category_id">
+                        <select class="form-select" name="category_id">
                             <option selected>Not selected</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -56,13 +56,12 @@
                 <div class="col-12">
                     <div class="my-3">
                         <label for="exampleFormControlTextarea1" class="form-label fs-4">Describe your Problem</label>
-                        <textarea required class="form-control" name="content" id="editor" rows="3"></textarea>
+                        <textarea class="form-control" name="content" id="editor" rows="3"></textarea>
                     </div>
                 </div>
                 <div class="col-12 d-flex justify-content-end">
                   <a class="btn btn-danger mx-2" href="{{ route('home') }}">Cancel </a>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    
                 </div>
             </div>
 
