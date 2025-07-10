@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+     <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
     <style>
         .editor-preview img, .answer-preview img{
@@ -22,6 +23,7 @@
     </style>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
+
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Scripts -->
@@ -63,8 +65,31 @@
                         </div>
                     </form>
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto align-items-center">
                         <!-- Authentication Links -->
+                        <div class="dropdown-center">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                               <i class="bi bi-bell"></i>
+                            </button>
+                            <ul class="dropdown-menu shadow">
+                                @if (auth()->user()->unreadNotifications->count()>0)
+                                     @foreach(auth()->user()->unreadNotifications as $notification)
+                                <li><a class="dropdown-item" 
+                                    href="{{ $notification->data['url'] }}">
+                                   @if (isset($notification->data['commenter']))
+                                       
+                                  <strong>{{ $notification->data['commenter'] }}</strong>
+                                   @endif 
+                                    {{ $notification->data['message'] }}
+                                </a></li>
+
+                                @endforeach
+                                @else
+                                <li class="text-center">No Notification</li>
+                                @endif
+                               
+                            </ul>
+                            </div>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                    <img id="profileImage" width="30" height="30"
@@ -133,5 +158,42 @@
             @yield('content')
         </main>
     </div>
+<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 1080;">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+    <div class="toast-header">
+      <strong class="me-auto" id="toastTitle">Notification</strong>
+      <small>الآن</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toastBody">
+      هنا نص الإشعار
+    </div>
+  </div>
+</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+  // استورد Bootstrap Toast
+  var toastEl = document.getElementById('liveToast');
+  var toast = new bootstrap.Toast(toastEl);
+
+  // دالة لتحديث النص وإظهار التوست
+  function showToast(title, message, url) {
+     console.log("tostshowed")
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastBody').innerHTML = `<a href="${url}" class="text-decoration-none">${message}</a>`;
+    toast.show();
+    console.log("tostshowed")
+  }
+
+  // استمع للإشعارات من Laravel Echo
+  Echo.private('App.Models.User.{{ Auth::id() }}')
+    .notification((notification) => {
+      showToast(notification.commenter, notification.message, notification.url);
+      console.log(notification)
+    });
+});
+</script>
+
 </body>
 </html>

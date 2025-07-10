@@ -11,6 +11,7 @@ use Auth;
 use Share;
 use App\Models\Subscription;
 use App\Notifications\NewPostNotification;
+use App\Events\PostCreated;
 class PostController extends Controller
 {
     /**
@@ -59,6 +60,7 @@ class PostController extends Controller
            foreach ($subscriptions as $subscription) {
                $subscription->user->notify(new NewPostNotification($post));
            }
+           event(new PostCreated($post)); // send question created event
            return redirect()->route('posts.index')->with('success','Post created successfully');
     
     }

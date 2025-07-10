@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Notifications\CommentAdded;
 use Illuminate\Http\Request;
 use Auth;
 class CommentController extends Controller
@@ -20,6 +21,13 @@ class CommentController extends Controller
            $input['user_id']= Auth::user()->id;
            $input['post_id']= $post->id;
            Comment::create($input);
+           if ($post->user_id !== auth()->id()) {
+                $post->user->notify(new CommentAdded(
+                     'Add comment on your Article',
+                    route('posts.show', $post->id),
+                    Auth::user()->profile->name
+                ));
+}
            return redirect()->back();
     }
     /**

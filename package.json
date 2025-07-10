@@ -18,6 +18,8 @@
         "vite": "^6.0"
     },
     "dependencies": {
-        "easymde": "^2.18.0"
+        "easymde": "^2.18.0",
+        "laravel-echo": "^2.1.6",
+        "pusher-js": "^8.4.0"
     }
 }
