@@ -58,10 +58,11 @@
                           </li>
                     </ul>
                    
-                    <form class="p-2 bg-white me-2 ">
+                    <form action="{{ route('search') }}" method="GET" class="p-2 bg-white me-2 ">
+                        
                         <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Search here ..." aria-label="Search" aria-describedby="button-addon2">
-                          <button class="btn btn-primary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+                          <input type="text" name="q" class="form-control" placeholder="Search here ..." aria-label="Search" aria-describedby="button-addon2">
+                          <button class="btn btn-primary" type="submit" id="button-addon2"><i class="bi bi-search"></i></button>
                         </div>
                     </form>
                     <!-- Right Side Of Navbar -->

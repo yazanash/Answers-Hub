@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\MainController::class, 'index']); 
-
+Route::get('/search', [App\Http\Controllers\SearchController::class, 'index'])->name('search');
 Auth::routes();
 Auth::routes(['verify' => true]);
 Route::get('/home', fn() => redirect('/home/article'))->name('home');
